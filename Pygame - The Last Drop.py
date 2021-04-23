@@ -1,6 +1,7 @@
 import pygame
 import random
 import math
+from pygame import mixer
 
 
 # initialize pygame
@@ -30,6 +31,11 @@ class LastDrop:
         BG_IMG = pygame.image.load('background-image.jpg')
         self.BG = pygame.transform.scale(BG_IMG, (400, 100))
 
+        mixer.music.load('bg.mp3')
+        mixer.music.play(-1)
+
+        self.DROP_CONFLICT_SOUND = mixer.Sound('conflict.mp3')
+
         # self.PLAYER_X, self.PLAYER_Y = 185, 450
         self.ENEMY_IMG = pygame.transform.scale(pygame.image.load('drop.png'), (30, 30))
         self.ENEMY_LIST = []
@@ -49,6 +55,7 @@ class LastDrop:
         distance = math.sqrt(
             math.pow((player_x + 15) - (enemy_x + 15), 2) + math.pow((player_y + 15) - (enemy_y + 15), 2))
         if distance < 20:
+            self.DROP_CONFLICT_SOUND.play()
             self.RUN = False
 
     def enemy_movement(self):
